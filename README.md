@@ -1,6 +1,8 @@
 # forkify-app
 Project's overview:
+
 [x] The forkify app was developed for both cooks and people who don't know how to cook.
+
 [x] It's features include;
 - ability to search for your favourite meals/dishes
 - ability to save your favourite recipes,
@@ -8,6 +10,9 @@ Project's overview:
 - also no need of worring about losing your favourite recipe list when you refresh the site or visit a different site because they are saved in a local storage.
 
 Technologies used:
+
 [x] HTML
+
 [x] CSS
+
 [x] JavaScript
