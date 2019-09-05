@@ -16,3 +16,9 @@ Technologies used:
 [x] CSS
 
 [x] JavaScript
+
+[x] Babel
+
+[x] Webpack
+
+* The architecture of this project was implemented with MVC
