@@ -48,3 +48,5 @@ elements.searchResPages.addEventListener('click', (e) =>{
         searchView.renderResults(state.search.results, goToPage);
     }
 })
+
+
