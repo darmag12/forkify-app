@@ -45,7 +45,47 @@ export default class Recipe {
                 ingredients = ingredients.replace(/ *\([^)]*\) */g, ' ');
 
             // 3) parse ingredients into count, unit and ingredient
-            return ingredients;
+                const arrIng = ingredients.split(' ');
+                const unitIndex = arrIng.findIndex(el2 => unitsShort.includes(el2));
+
+                let objIng;
+                if(unitIndex > -1){
+                    // if there is a unit,
+                    // ex. 4 1/2 cups, arrCount is [4, 1/2] ---> eval('4+1/2') = 4.5,
+                    // ex. 4 cups, arrCount is [4]
+                    let arrCount = arrIng.slice(0, unitIndex);
+
+                    let count;
+                    if(arrCount.length === 1){
+                        // I did this because in the arrIng array, we have some nnumbers like 1-1/2 since they had no space to separate them, I replaced '-' with '+' then used eval to evaluate the two numbers eval('1+1/2').
+                        count = eval(arrIng[0].replace('-','+'));
+                    } else {
+                        //ex. 4 1/2 cups, arrCount is [4, 1/2] ---> eval('4+1/2') = 4.5
+                        count = eval(arrIng.slice(0, unitIndex).join('+'));
+                    }
+
+                    objIng = {
+                        count,
+                        unit: arrIng[unitIndex],
+                        ingredients: arrIng.slice(unitIndex + 1).join(' ')
+                    }
+                    
+                } else if(parseInt(arrIng[0], 10)){
+                    // there is no unit but first element is a number
+                    objIng = {
+                        count: parseInt(arrIng[0], 10),
+                        unit: '',
+                        ingredients: arrIng.slice(1).join(' ')
+                    }
+                } else if (unitIndex === -1){
+                    // there is no unit and number in first position
+                    objIng = {
+                        count: 1,
+                        unit: '',
+                        ingredients
+                    }
+                }
+            return objIng;
         });
         this.ingredients = newIngredients;
     }

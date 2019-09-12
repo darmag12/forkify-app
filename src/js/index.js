@@ -51,7 +51,7 @@ elements.searchForm.addEventListener('submit', e => {
 elements.searchResPages.addEventListener('click', (e) =>{
     const btn = e.target.closest('.btn-inline');
     if (btn){
-        const goToPage = parseInt(btn.dataset.goto);
+        const goToPage = parseInt(btn.dataset.goto, 10);
         searchView.clearResults();
         searchView.renderResults(state.search.results, goToPage);
     }
@@ -70,8 +70,9 @@ if (id){
 state.recipe = new Recipe(id);
 
 try{
-    // get recipe data
+    // get recipe data and parse ingredients
     await state.recipe.getRecipe();
+    state.recipe.parseIngredients();
     // calculate servings and time
     state.recipe.calcServings();
     state.recipe.calcTime();
