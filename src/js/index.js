@@ -1,5 +1,6 @@
 // Global app controller
 import Search from './models/Search';
+import Recipe from './models/Recipe';
 import * as searchView from './views/searchView'
 import { elements, renderLoader, clearLoader } from './views/base';
 
@@ -11,6 +12,7 @@ import { elements, renderLoader, clearLoader } from './views/base';
 */
 const state = {};
 
+/*  SEARCH CONTROLLER  */
 const controlSearch = async() =>{
     // 1) get query from view
     const query = searchView.getInput();
@@ -25,12 +27,18 @@ const controlSearch = async() =>{
         searchView.clearResults();
         renderLoader(elements.searchResults);
 
-        // 4) search for recipes
-        await state.search.getResults();
+        try{
+            // 4) search for recipes
+            await state.search.getResults();
+    
+            // 5) render results to the UI
+            clearLoader();
+            searchView.renderResults(state.search.results);
 
-        // 5) render results to the UI
-        clearLoader();
-        searchView.renderResults(state.search.results);
+        } catch (err){
+            alert('Something went wrong with the search...');
+            clearLoader();
+        }
     }
 }
 
@@ -47,6 +55,37 @@ elements.searchResPages.addEventListener('click', (e) =>{
         searchView.clearResults();
         searchView.renderResults(state.search.results, goToPage);
     }
-})
+});
 
+/*  RECIPE CONTROLLER  */
+const controlRecipe = async () => {
+// get id from url
+const id = window.location.hash.replace('#', '');
+console.log(id);
+
+if (id){
+// prepare UI for changes
+
+// create a new recipe object and add it to state
+state.recipe = new Recipe(id);
+
+try{
+    // get recipe data
+    await state.recipe.getRecipe();
+    // calculate servings and time
+    state.recipe.calcServings();
+    state.recipe.calcTime();
+
+    // render recipe
+    console.log(state.recipe);
+} catch (err){
+    alert('Error processing recipe!');
+}
+}
+
+}
+
+// window.addEventListener('hashchange', controlRecipe);
+// window.addEventListener('load', controlRecipe);
+['hashchange', 'load'].forEach(event => window.addEventListener(event, controlRecipe));
 
