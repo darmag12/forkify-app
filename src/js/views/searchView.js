@@ -9,7 +9,7 @@ export const clearInput = () => {
 }
 
 // function for displaying the titles in a limit of 17 characters or less to keep everything on the same line 
-const limitRecipeTitle = (title, limit = 17) => {
+export const limitRecipeTitle = (title, limit = 17) => {
     const newTitle = [];
     if (title.length > limit){
         title.split(' ').reduce((acc, cur) => {
@@ -28,6 +28,12 @@ export const clearResults = () => {
     // clear the list and print the new list
     elements.searchResList.innerHTML = '';
     elements.searchResPages.innerHTML = '';
+}
+
+export const highlightSelected = id => {
+    const resultsLink = document.querySelectorAll('.results__link')
+    Array.from(resultsLink).forEach(el => el.classList.remove('results__link--active'));
+    document.querySelector(`.results__link[href*="${id}"]`).classList.add('results__link--active');
 }
 
 // injects html in the DOM
