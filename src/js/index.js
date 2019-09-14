@@ -18,13 +18,12 @@ import { elements, renderLoader, clearLoader } from './views/base';
 - Liked recipes 
 */
 const state = {};
-window.state = state;
+
 
 /*  SEARCH CONTROLLER  */
 const controlSearch = async() =>{
     // 1) get query from view
     const query = searchView.getInput();
-    // console.log(query)
 
     if (query){
         // 2) new search object and add to state
@@ -50,12 +49,13 @@ const controlSearch = async() =>{
     }
 }
 
+// triggers controll search on submit
 elements.searchForm.addEventListener('submit', e => {
     e.preventDefault();
     controlSearch();
-
 });
 
+// alows us to do pagination
 elements.searchResPages.addEventListener('click', (e) =>{
     const btn = e.target.closest('.btn-inline');
     if (btn){
@@ -69,7 +69,6 @@ elements.searchResPages.addEventListener('click', (e) =>{
 const controlRecipe = async () => {
 // get id from url
 const id = window.location.hash.replace('#', '');
-// console.log(id);
 
 if (id){
 // prepare UI for changes
@@ -106,6 +105,7 @@ try{
 
 // window.addEventListener('hashchange', controlRecipe);
 // window.addEventListener('load', controlRecipe);
+// a much better way of using one handler for multiple events
 ['hashchange', 'load'].forEach(event => window.addEventListener(event, controlRecipe));
 
 /* LIST CONTROLLER */
@@ -113,12 +113,18 @@ const controlList = () => {
     // create a new list if there is none yet
     if(!state.list) state.list = new List();
 
+    // clear the current shopping list before adding another one
+    listView.clearList();
+
     // add each ingredients to the list and UI
     state.recipe.ingredients.forEach(el => {
       const item = state.list.addItem(el.count, el.unit, el.ingredient);
       listView.renderItem(item);
     })
 };
+
+
+
 
 /* LIKE CONTROLLER*/
 const controlLike = () => {
@@ -129,6 +135,7 @@ const controlLike = () => {
     if(!state.likes.isLiked(currentID)){
         // add like to the state 
         const newLike = state.likes.addLike(currentID, state.recipe.title, state.recipe.author, state.recipe.img);
+
         // toggle the like button
         likesView.toggleLikeBtn(true);
 
@@ -139,6 +146,7 @@ const controlLike = () => {
     } else {
         // remove like from state
         state.likes.deleteLike(currentID);
+
         // toggle the like button
         likesView.toggleLikeBtn(false);
 
@@ -147,6 +155,10 @@ const controlLike = () => {
     }
     likesView.toggleLikeMenu(state.likes.getNumLikes());
 }
+
+
+
+
 
 // show favourite recipes even when the page reloads
 window.addEventListener('load', () => {
@@ -163,10 +175,14 @@ window.addEventListener('load', () => {
     state.likes.likes.forEach(like => likesView.renderLike(like));
 });
 
+
+
+
+
 // handle delete and update list item
 elements.shopping.addEventListener('click', e => {
     const id = e.target.closest('.shopping__item').dataset.itemid;
-    // console.log(id);
+    
     // handle tghe delete button
     if(e.target.matches('.shopping__delete, .shopping__delete *')){
         // delete from state
@@ -185,6 +201,10 @@ elements.shopping.addEventListener('click', e => {
     }
 });
 
+
+
+
+
 // handling recipe button clicks
 elements.recipe.addEventListener('click', e => {
     // this will turn out to be true if a click is triggered in the '.btn-decrease' class or any of it's child which is the purpose of the astric *
@@ -193,16 +213,21 @@ elements.recipe.addEventListener('click', e => {
         if(state.recipe.servings > 1){
             state.recipe.updateServings('dec');
             recipeView.updateServingsIngredients(state.recipe);
+
         } else {
             alert('Sorry you can only serve upto a minimum of 1 servings');
         }
+
     } else if(e.target.matches('.btn-increase, .btn-increase *')){
         // increase btn is clicked
         state.recipe.updateServings('inc');
+
         recipeView.updateServingsIngredients(state.recipe);
+
     } else if ( e.target.matches('.recipe__btn--add, .recipe__btn--add *')){
         // add ingredients to shopping list
         controlList();
+        
     } else if (e.target.matches('.recipe__love, .recipe__love *')){
         // like controler
         controlLike();
