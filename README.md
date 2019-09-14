@@ -21,4 +21,6 @@ Technologies used:
 
 [x] Webpack
 
+[x] Uniqid (for generating unique ids);
+
 * The architecture of this project was implemented with MVC
