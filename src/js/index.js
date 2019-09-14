@@ -10,6 +10,7 @@ import * as listView from './views/listView';
 import * as likesView from './views/likesView';
 import { elements, renderLoader, clearLoader } from './views/base';
 
+
 /* Global state of the app.
 - Search object
 - Current recipe object
@@ -118,9 +119,7 @@ const controlList = () => {
       listView.renderItem(item);
     })
 };
-// TESTING
-state.likes = new Likes();
-likesView.toggleLikeMenu(state.likes.getNumLikes());
+
 /* LIKE CONTROLLER*/
 const controlLike = () => {
     if(!state.likes) state.likes = new Likes();
@@ -148,6 +147,21 @@ const controlLike = () => {
     }
     likesView.toggleLikeMenu(state.likes.getNumLikes());
 }
+
+// show favourite recipes even when the page reloads
+window.addEventListener('load', () => {
+    // create a new empty likes object
+    state.likes = new Likes();
+
+    // restore the likes in local storage back to the likes array
+    state.likes.readStorage();
+    
+    // toggle like menu button based on the length of likes array
+    likesView.toggleLikeMenu(state.likes.getNumLikes());
+
+    // render the existing likes
+    state.likes.likes.forEach(like => likesView.renderLike(like));
+});
 
 // handle delete and update list item
 elements.shopping.addEventListener('click', e => {
