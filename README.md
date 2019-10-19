@@ -11,7 +11,7 @@ Project's overview:
 
 # Developer
 
-[x] This app was developed by: DarTecc ~ Daryl Magera
+[x] This app was developed by: Dartechx ~ Daryl Magera
 
 # Technologies used:
 
