@@ -6,8 +6,8 @@ Project's overview:
 [x] It's features include;
 - ability to search for your favourite meals/dishes
 - ability to save your favourite recipes,
-- ability to add a recipe to a shopping list, which enables you to see what you need to get inorder to cook a certain dish,
-- also no need of worring about losing your favourite recipe list when you refresh the site or visit a different site because they are saved in a local storage.
+- ability to add a recipe to a shopping list, which enables you to see what you need to get in order to cook a certain dish,
+- also no need of worrying about losing your favourite recipe list when you refresh the site or visit a different site because they are saved in a local storage.
 
 # Developer
 
